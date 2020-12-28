@@ -13,6 +13,7 @@ resultados = []
 for case in cases:
     JobName = case["name"]
     elemSize = case["elemSize"]
+    deviationFactor = case["deviationFactor"]
     execfile('a.py')
     execfile('b.py')
     resultados.append(resultado)
