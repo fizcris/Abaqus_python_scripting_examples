@@ -164,8 +164,8 @@ elemType1 = mesh.ElemType(elemCode=mesh.S4R, elemLibrary=STANDARD,
     secondOrderAccuracy=OFF, hourglassControl=DEFAULT)
 elemType2 = mesh.ElemType(elemCode=mesh.S3, elemLibrary=STANDARD)
 
-faces = part1.faces.getSequenceFromMask(mask=('[#ffffffff:5 #3f ]', ), )
-pickedRegions =(faces, )
+
+pickedRegions =(part1.faces, )
 part1.setElementType(regions=pickedRegions, elemTypes=(elemType1, elemType2))
 part1.generateMesh()
 
