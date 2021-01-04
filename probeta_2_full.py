@@ -1,4 +1,4 @@
-# coding=utf-8
+ # coding=utf-8
 from part import *
 from material import *
 from section import *
@@ -12,7 +12,7 @@ from sketch import *
 from regionToolset import *
 from visualization import *
 from connectorBehavior import *
-import regionToolset
+import  regionToolset
 import time
 
 ##################      Helper garbage colect. funct.         ##################
@@ -93,8 +93,7 @@ mdb.models['Model-1'].HomogeneousShellSection(idealization=NO_IDEALIZATION,
 # Assign section
 part1.SectionAssignment(offset=0.0,
                         offsetField='', offsetType=MIDDLE_SURFACE, region=Region(
-        faces=part1.faces.getSequenceFromMask(
-            mask=('[#3ff ]',), )), sectionName='Section-1', thicknessAssignment=
+        faces=part1.faces), sectionName='Section-1', thicknessAssignment=
                         FROM_SECTION)
 
 ##################      Mesh         ##################
@@ -162,11 +161,11 @@ part1.setMeshControls(elemShape=QUAD, regions=part1.faces, algorithm=mesh.MEDIAL
                       allowMapped=True)
 #########  Set element type
 elemType1 = mesh.ElemType(elemCode=mesh.S4R, elemLibrary=STANDARD,
-                          secondOrderAccuracy=OFF, hourglassControl=DEFAULT)
+    secondOrderAccuracy=OFF, hourglassControl=DEFAULT)
 elemType2 = mesh.ElemType(elemCode=mesh.S3, elemLibrary=STANDARD)
 
-faces = part1.faces.getSequenceFromMask(mask=('[#ffffffff:5 #3f ]',), )
-pickedRegions = (faces,)
+faces = part1.faces.getSequenceFromMask(mask=('[#ffffffff:5 #3f ]', ), )
+pickedRegions =(faces, )
 part1.setElementType(regions=pickedRegions, elemTypes=(elemType1, elemType2))
 part1.generateMesh()
 
@@ -174,24 +173,24 @@ part1.generateMesh()
 a = mdb.models['Model-1'].rootAssembly
 f1 = a.instances['Part-1-1'].faces
 faces1 = f1.getSequenceFromMask(mask=(
-    '[#800048bf #120001 #2400006 #600 #c05000 #4 ]',), )
+    '[#800048bf #120001 #2400006 #600 #c05000 #4 ]', ), )
 e1 = a.instances['Part-1-1'].edges
 edges1 = e1.getSequenceFromMask(mask=(
     '[#1c771dce #81f0001c #3 #0 #7e #7800000 #3',
-    ' #3f00 #0 #3078000 #0 #3f8000 #0:2 #3ee0000', ' #e0000 #3 ]',), )
+    ' #3f00 #0 #3078000 #0 #3f8000 #0:2 #3ee0000', ' #e0000 #3 ]', ), )
 v1 = a.instances['Part-1-1'].vertices
 verts1 = v1.getSequenceFromMask(mask=(
-    '[#43162cc #21f00 #0 #f #f0000007 #0 #e00', ' #3e0000 #0 #3f00 ]',), )
+    '[#43162cc #21f00 #0 #f #f0000007 #0 #e00', ' #3e0000 #0 #3f00 ]', ), )
 region = regionToolset.Region(vertices=verts1, edges=edges1, faces=faces1)
 mdb.models['Model-1'].EncastreBC(name='BC-2', createStepName='Initial',
-                                 region=region, localCsys=None)
+    region=region, localCsys=None)
 
 ##################      Create Load  Step         ##################
 mdb.models['Model-1'].StaticStep(description='Aplicacion presion', name='Step-1',
                                  previous='Initial')
 
 ##################      Create Load          ##################
-# N
+  # N
 ##################      Helper garbage colect. funct.         ##################
 if 'fuerza' not in locals():
     fuerza = 14.86
@@ -207,15 +206,15 @@ mdb.models['Model-1'].Pressure(amplitude=UNSET, createStepName='Step-1',
 
 ##################      Data extraction        ##################
 #########  Create Set for Load cell
-part1.Set(faces=part1.faces.getSequenceFromMask(mask=('[#0:4 #20000000 #10 ]',), ),
+part1.Set(faces=part1.faces.getSequenceFromMask(mask=('[#0:4 #20000000 #10 ]', ),),
           name='Galga')
+
 
 #########  Create Field Output Request
 mdb.models['Model-1'].FieldOutputRequest(createStepName='Step-1',
-                                         name='F-Output-2', rebar=EXCLUDE,
-                                         region=mdb.models['Model-1'].rootAssembly.allInstances['Part-1-1'].sets[
-                                             'Galga'],
-                                         sectionPoints=DEFAULT, variables=('S', 'E'))
+                                        name='F-Output-2', rebar=EXCLUDE,
+                                        region=mdb.models['Model-1'].rootAssembly.allInstances['Part-1-1'].sets['Galga'],
+                                        sectionPoints=DEFAULT, variables=('S', 'E'))
 ##################      Create Job/s          ##################
 # Check student
 numNodes = len(part1.nodes);
